@@ -9,7 +9,7 @@
 		<version>2.2.1.RELEASE</version>
 		<relativePath /> <!-- lookup parent from repository -->
 	</parent>
-	<groupId>com.matera.mockbank</groupId>
+	<groupId>br.com.codigojava.mockbank</groupId>
 	<artifactId>MockBank</artifactId>
 	<version>1.0.0</version>
 	<name>MockBank</name>

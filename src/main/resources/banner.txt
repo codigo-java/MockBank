@@ -7,9 +7,9 @@
  
  ================================================================================
  
-                 :: DOJO MOCK TESTS - MATERA SYSTEMS ::
+                 :: DOJO MOCK TESTS - CODIGO JAVA ::
                  
-                       Presented by: Aldeir Santos
+                     Presented by: Aldeir Santos
                        
 ================================================================================
                        
