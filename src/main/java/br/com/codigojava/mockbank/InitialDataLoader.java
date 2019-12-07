@@ -41,7 +41,7 @@ public class InitialDataLoader implements ApplicationListener<ContextRefreshedEv
 		List<Pessoa> pessoas = Arrays.asList(
 			new Pessoa(1, "Fulano", TipoPessoa.FISICA, 11111111111L),
 			new Pessoa(2, "Ciclano", TipoPessoa.FISICA, 22222222222L),
-			new Pessoa(3, "Matera", TipoPessoa.JURIDICA, 12345678901234L)
+			new Pessoa(3, "Empresa XYZ", TipoPessoa.JURIDICA, 12345678901234L)
 		);
 		
 		pessoaBusiness.saveAll(pessoas);
