@@ -6,4 +6,6 @@ import br.com.codigojava.mockbank.entity.Conta;
 
 public interface ContaRepository extends JpaRepository<Conta, Integer> {
 
+	public Conta findByAgenciaAndNumero(Long agencia, Long numero);
+	
 }

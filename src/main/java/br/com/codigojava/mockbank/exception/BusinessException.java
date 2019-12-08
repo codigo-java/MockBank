@@ -1,5 +1,6 @@
 package br.com.codigojava.mockbank.exception;
 
+import java.text.MessageFormat;
 import java.util.ResourceBundle;
 
 import org.springframework.http.HttpStatus;
@@ -20,23 +21,21 @@ public class BusinessException extends RuntimeException {
 	private final HttpStatus httpStatus;
 	
 	private static final ResourceBundle resourse = ResourceBundle.getBundle("error_messages");
-
-	public BusinessException(String code) {
+	
+	public BusinessException(String code, Object ... params) {
 		this.code = code;
-		this.message = getMessage(code);
+		this.message = format(getMessage(code), params);
 		this.httpStatus = HttpStatus.INTERNAL_SERVER_ERROR;
 	}
 	
-	public BusinessException(String code, HttpStatus httpStatus) {
+	public BusinessException(String code, HttpStatus httpStatus, Object ... params) {
 		this.code = code;
-		this.message = getMessage(code);
+		this.message = format(getMessage(code), params);
 		this.httpStatus = httpStatus;
 	}
 	
-	public BusinessException (String code, String message){
-		this.code = code;
-		this.message = message;
-		this.httpStatus = HttpStatus.INTERNAL_SERVER_ERROR;
+	private String format(String message, Object ... args) {
+		return new MessageFormat(message).format(args);
 	}
 	
 	private String getMessage(String code) {

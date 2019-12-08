@@ -4,9 +4,14 @@ import java.math.BigDecimal;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import javax.transaction.Transactional;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+import br.com.codigojava.mockbank.dto.DepositoDTO;
+import br.com.codigojava.mockbank.dto.SaqueDTO;
+import br.com.codigojava.mockbank.dto.TransferenciaDTO;
 import br.com.codigojava.mockbank.entity.Conta;
 import br.com.codigojava.mockbank.entity.Pessoa;
 import br.com.codigojava.mockbank.entity.enums.TipoConta;
@@ -33,16 +38,56 @@ public class ContaBusiness {
 		return contaRepository.saveAll(contas);
 	}
 
-	public void transferirValor(Long agencia, Long numContaOrigem, Long numContaDestino) {
+	@Transactional
+	public void transferir(TransferenciaDTO transferenciaDto) {
+		Conta contaOrigem = contaRepository.findByAgenciaAndNumero(transferenciaDto.getAgencia(), transferenciaDto.getNumContaOrigem());
+		if(contaOrigem == null) {
+			throw new BusinessException("MB-013", transferenciaDto.getNumContaOrigem(), transferenciaDto.getAgencia());
+		}
+		SaqueDTO saqueDto = new SaqueDTO(contaOrigem.getAgencia(), contaOrigem.getNumero(), transferenciaDto.getValor());
+		sacar(saqueDto);
 		
+		Conta contaDestino = contaRepository.findByAgenciaAndNumero(transferenciaDto.getAgencia(), transferenciaDto.getNumContaDestino());
+		if(contaDestino == null) {
+			throw new BusinessException("MB-013", transferenciaDto.getNumContaDestino(), transferenciaDto.getAgencia());			
+		}
+		DepositoDTO depositoDto = new DepositoDTO(contaDestino.getAgencia(), contaDestino.getNumero(), transferenciaDto.getValor());
+		depositar(depositoDto);
+
+		contaRepository.save(contaOrigem);
+		contaRepository.save(contaDestino);
 	}
 	
-	public void depositar(Long agencia, Long numero) {
+	public void depositar(DepositoDTO depositoDto) {
+		Conta conta = contaRepository.findByAgenciaAndNumero(depositoDto.getAgencia(), depositoDto.getNumero());
+		if(conta == null) {
+			throw new BusinessException("MB-013", depositoDto.getNumero(), depositoDto.getAgencia());
+		}
 		
+		if(depositoDto.getValor().compareTo(BigDecimal.valueOf(0)) > 0) {
+			BigDecimal saldo = conta.getSaldo();
+			saldo = saldo.add(depositoDto.getValor());
+			conta.setSaldo(saldo);
+			contaRepository.save(conta);
+		} else {
+			throw new BusinessException("MB-014", depositoDto.getNumero(), depositoDto.getAgencia());
+		}
 	}
 	
-	public void sacar(Long agencia, Long numero){
+	public void sacar(SaqueDTO saqueDto){
+		Conta conta = contaRepository.findByAgenciaAndNumero(saqueDto.getAgencia(), saqueDto.getNumero());
+		if(conta == null) {
+			throw new BusinessException("MB-013", saqueDto.getNumero(), saqueDto.getAgencia());
+		}
 		
+		if(saqueDto.getValor().compareTo(BigDecimal.valueOf(0)) > 0) {
+			BigDecimal saldo = conta.getSaldo();
+			saldo = saldo.subtract(saqueDto.getValor());
+			conta.setSaldo(saldo);
+			contaRepository.save(conta);
+		} else {
+			throw new BusinessException("MB-014", saqueDto.getNumero(), saqueDto.getAgencia());
+		}
 	}
 	
 	private void validaConta(Conta conta) {
@@ -101,6 +146,10 @@ public class ContaBusiness {
 		} else if(conta.getTipoConta().equals(TipoConta.POUPANCA) && conta.getLimite() != null) {
 			throw new BusinessException("MB-007");									
 		}
+	}
+
+	public BigDecimal saldo(Long agencia, Long numero) {
+		return contaRepository.findByAgenciaAndNumero(agencia, numero).getSaldo();
 	}
 
 }
