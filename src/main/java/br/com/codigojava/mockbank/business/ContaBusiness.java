@@ -11,6 +11,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cache.annotation.Cacheable;
+import org.springframework.cache.annotation.EnableCaching;
 import org.springframework.stereotype.Component;
 
 import com.github.benmanes.caffeine.cache.Cache;
@@ -27,21 +28,25 @@ import br.com.codigojava.mockbank.exception.BusinessException;
 import br.com.codigojava.mockbank.repository.ContaRepository;
 
 @Component
+@EnableCaching
 public class ContaBusiness {
 
 	private static final Logger LOG = LoggerFactory.getLogger(ContaBusiness.class);
 	
 	@Autowired
 	private ContaRepository contaRepository;
+	
+	Cache<String, Integer> cache = Caffeine.newBuilder().expireAfterAccess(30, TimeUnit.SECONDS)
+			.expireAfterWrite(30, TimeUnit.SECONDS)
+			.maximumSize(3)
+			.build();
 
-	Cache<String, Integer> cache = Caffeine.newBuilder().expireAfterAccess(10, TimeUnit.SECONDS).build();
-
+	//@Cacheable("teste")
 	public Integer testeCaffeine() {
 		return getCache();
 	}
 	
-	@Cacheable("teste.caffeine")
-	public Integer getCache() {
+	public Integer getCache() {		
 		Integer valorCache = cache.getIfPresent("teste.caffeine");		
 		System.err.println("teste.caffeine => " + valorCache);		
 		if(valorCache == null) {
