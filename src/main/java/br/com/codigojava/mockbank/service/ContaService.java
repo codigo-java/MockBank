@@ -41,4 +41,8 @@ public class ContaService {
 	public BigDecimal saldo(Long agencia, Long numero) {
 		return contaBusiness.saldo(agencia, numero);
 	}
+
+	public Integer testeCaffeine() {
+		return contaBusiness.testeCaffeine();
+	}
 }

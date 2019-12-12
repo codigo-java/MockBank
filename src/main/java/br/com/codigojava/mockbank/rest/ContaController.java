@@ -61,5 +61,10 @@ public class ContaController {
 		//throw new BusinessException("MB-001");
 		throw new BusinessException("MB-013", "123548", "001");
 	}
+	
+	@GetMapping(path = "teste-caffeine")
+	public Integer testeCacheCaffeine() {
+		return contaService.testeCaffeine();
+	}
 
 }
