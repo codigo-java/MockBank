@@ -25,7 +25,7 @@ public class ContaController {
 
 	@Autowired
 	private ContaService contaService;
-
+	
 	@GetMapping(path = "/contas")
 	public List<Conta> getContas() {
 		return contaService.findAll();
@@ -56,15 +56,10 @@ public class ContaController {
 		return contaService.saldo(agencia, numero);
 	}
 
-	@GetMapping(path = "teste-be")
+	@GetMapping(path = "/teste-be")
 	public Conta testeBubinessException() {
 		//throw new BusinessException("MB-001");
 		throw new BusinessException("MB-013", "123548", "001");
-	}
-	
-	@GetMapping(path = "teste-caffeine")
-	public Integer testeCacheCaffeine() {
-		return contaService.testeCaffeine();
 	}
 
 }

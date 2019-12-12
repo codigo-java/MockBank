@@ -42,7 +42,4 @@ public class ContaService {
 		return contaBusiness.saldo(agencia, numero);
 	}
 
-	public Integer testeCaffeine() {
-		return contaBusiness.testeCaffeine();
-	}
 }

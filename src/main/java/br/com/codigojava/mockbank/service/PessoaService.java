@@ -22,4 +22,8 @@ public class PessoaService {
 		return pessoaBusiness.insertPessoa(pessoa);
 	}
 
+	public Pessoa findById(Integer id) {
+		return pessoaBusiness.findById(id);
+	}
+
 }

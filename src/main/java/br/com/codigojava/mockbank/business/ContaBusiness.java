@@ -2,7 +2,6 @@ package br.com.codigojava.mockbank.business;
 
 import java.math.BigDecimal;
 import java.util.List;
-import java.util.concurrent.TimeUnit;
 import java.util.stream.Collectors;
 
 import javax.transaction.Transactional;
@@ -10,12 +9,7 @@ import javax.transaction.Transactional;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.cache.annotation.Cacheable;
-import org.springframework.cache.annotation.EnableCaching;
 import org.springframework.stereotype.Component;
-
-import com.github.benmanes.caffeine.cache.Cache;
-import com.github.benmanes.caffeine.cache.Caffeine;
 
 import br.com.codigojava.mockbank.dto.DepositoDTO;
 import br.com.codigojava.mockbank.dto.SaqueDTO;
@@ -28,7 +22,6 @@ import br.com.codigojava.mockbank.exception.BusinessException;
 import br.com.codigojava.mockbank.repository.ContaRepository;
 
 @Component
-@EnableCaching
 public class ContaBusiness {
 
 	private static final Logger LOG = LoggerFactory.getLogger(ContaBusiness.class);
@@ -36,30 +29,6 @@ public class ContaBusiness {
 	@Autowired
 	private ContaRepository contaRepository;
 	
-	Cache<String, Integer> cache = Caffeine.newBuilder().expireAfterAccess(30, TimeUnit.SECONDS)
-			.expireAfterWrite(30, TimeUnit.SECONDS)
-			.maximumSize(3)
-			.build();
-
-	//@Cacheable("teste")
-	public Integer testeCaffeine() {
-		return getCache();
-	}
-	
-	public Integer getCache() {		
-		Integer valorCache = cache.getIfPresent("teste.caffeine");		
-		System.err.println("teste.caffeine => " + valorCache);		
-		if(valorCache == null) {
-			cache.put("teste.caffeine", 1);
-		}else {
-			cache.put("teste.caffeine", ++valorCache);			
-		}		
-		valorCache = cache.getIfPresent("teste.caffeine");
-		System.err.println("teste.caffeine => " + valorCache);
-		
-		return valorCache;
-	}
-
 	public List<Conta> findAll() {
 		return contaRepository.findAll();
 	}
