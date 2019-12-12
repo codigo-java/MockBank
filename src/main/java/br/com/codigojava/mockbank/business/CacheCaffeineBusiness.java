@@ -17,7 +17,7 @@ public class CacheCaffeineBusiness {
 	@Autowired
 	private PessoaRepository pessoaRepository;
 	
-	private static final String TESTE_CAFFEINE = "teste.caffeine";
+	private static final String TESTE_CAFFEINE = "teste.pessoa.caffeine";
 	
 	private Cache<String, Pessoa> cache = Caffeine.newBuilder().expireAfterAccess(30, TimeUnit.SECONDS)
 																.expireAfterWrite(30, TimeUnit.SECONDS)

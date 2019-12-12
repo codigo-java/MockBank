@@ -270,6 +270,26 @@
 				}
 			},
 			"response": []
+		},
+		{
+			"name": "Pessoa Cache Caffeine",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8080/mockbank/pessoa-cache",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"mockbank",
+						"pessoa-cache"
+					]
+				}
+			},
+			"response": []
 		}
 	],
 	"protocolProfileBehavior": {}
