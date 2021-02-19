@@ -23,28 +23,28 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 public class Conta {
-	
-	@Id
-	@GeneratedValue(strategy = GenerationType.AUTO)
-	private Integer id;
 
-	@Column
-	private Long agencia;
+    @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
+    private Integer id;
 
-	@Column
-	private Long numero;
+    @Column
+    private Long agencia;
 
-    @ManyToMany(fetch=FetchType.EAGER)
-	private Set<Pessoa> titulares;
+    @Column
+    private Long numero;
 
-	@Column
-	@Enumerated(EnumType.STRING)
-	private TipoConta tipoConta;
+    @ManyToMany(fetch = FetchType.EAGER)
+    private Set<Pessoa> titulares;
 
-	@Column
-	private BigDecimal saldo;
+    @Column
+    @Enumerated(EnumType.STRING)
+    private TipoConta tipoConta;
 
-	@Column
-	private BigDecimal limite;
-	
+    @Column
+    private BigDecimal saldo;
+
+    @Column
+    private BigDecimal limite;
+
 }
