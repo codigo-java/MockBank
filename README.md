@@ -1,1 +1,3 @@
-A simple mock bank application 
+# Mock-Bank
+
+### A simple mock bank application 
